@@ -29,6 +29,8 @@ namespace HockeyApp.iOS
 
 		private BITHockeyManager () {}
 
+		public Func<object, bool> IsCrash { get; set; }
+
 		public void StartManager()
 		{
 			if (startedManager) return;
@@ -56,12 +58,16 @@ namespace HockeyApp.iOS
 							// Enable crash reporting libraries
 							DoStartManager();
 
-							AppDomain.CurrentDomain.UnhandledException += (sender, e) => ThrowExceptionAsNative(e.ExceptionObject);
+							AppDomain.CurrentDomain.UnhandledException += (sender, e) => {
+								if(IsCrash == null || IsCrash(e.ExceptionObject))
+									ThrowExceptionAsNative(e.ExceptionObject);
+							};
 							TaskScheduler.UnobservedTaskException += (sender, e) =>
 							{
 								if (terminateOnUnobservedTaskException)
 								{
-									ThrowExceptionAsNative(e.Exception);
+									if(IsCrash == null || IsCrash(e.Exception))
+										ThrowExceptionAsNative(e.Exception);
 								}
 							};
 						}
@@ -83,12 +89,16 @@ namespace HockeyApp.iOS
 					// Enable crash reporting libraries
 					DoStartManager();
 
-					AppDomain.CurrentDomain.UnhandledException += (sender, e) => ThrowExceptionAsNative(e.ExceptionObject);
+					AppDomain.CurrentDomain.UnhandledException += (sender, e) => {
+						if(IsCrash == null || IsCrash(e.ExceptionObject))
+							ThrowExceptionAsNative(e.ExceptionObject);
+					};
 					TaskScheduler.UnobservedTaskException += (sender, e) =>
 					{
 						if (terminateOnUnobservedTaskException)
 						{
-							ThrowExceptionAsNative(e.Exception);
+							if(IsCrash == null || IsCrash(e.Exception))
+								ThrowExceptionAsNative(e.Exception);
 						}
 					};
 

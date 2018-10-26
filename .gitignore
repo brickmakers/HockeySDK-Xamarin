@@ -14,3 +14,4 @@ tools/
 
 # OS X
 .DS_Store
+.vs/

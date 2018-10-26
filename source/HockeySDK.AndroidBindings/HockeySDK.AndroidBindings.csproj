@@ -9,9 +9,9 @@
     <RootNamespace>HockeyApp.Android</RootNamespace>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
+    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <AssemblyName>HockeySDK.AndroidBindings</AssemblyName>
-    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <AndroidTlsProvider></AndroidTlsProvider>
     <AndroidClassParser>class-parse</AndroidClassParser>
     <NoWarn>CS0109,CS0114</NoWarn>

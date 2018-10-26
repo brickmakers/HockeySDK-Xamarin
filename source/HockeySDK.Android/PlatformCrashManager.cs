@@ -14,6 +14,6 @@ namespace HockeyApp
 			get { return HockeyAndroid.CrashManager.TerminateOnUnobservedTaskException; }
 			set { HockeyAndroid.CrashManager.TerminateOnUnobservedTaskException = value; }
 		}
-	}
+    }
 }
 
