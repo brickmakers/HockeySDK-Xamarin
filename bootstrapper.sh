@@ -6,7 +6,7 @@
 
 # Define directories.
 SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-TOOLS_DIR=$SCRIPT_DIR/tools
+TOOLS_DIR="$SCRIPT_DIR/tools"
 NUGET_EXE=$TOOLS_DIR/nuget.exe
 #XC_EXE=$TOOLS_DIR/xamarin-component.exe
 CAKE_EXE=$TOOLS_DIR/Cake/Cake.exe
@@ -35,14 +35,14 @@ for i in "$@"; do
 done
 
 # Make sure the tools folder exist.
-if [ ! -d $TOOLS_DIR ]; then
-  mkdir $TOOLS_DIR
+if [ ! -d "$TOOLS_DIR" ]; then
+  mkdir "$TOOLS_DIR"
 fi
 
 # Make sure that packages.config exist.
-if [ ! -f $TOOLS_DIR/packages.config ]; then
+if [ ! -f "$TOOLS_DIR/packages.config" ]; then
     echo "Downloading packages.config..."
-    curl -Lsfo $TOOLS_DIR/packages.config http://cakebuild.net/bootstrapper/packages
+    curl -Lsfo "$TOOLS_DIR/packages.config" http://cakebuild.net/bootstrapper/packages
     if [ $? -ne 0 ]; then
         echo "An error occured while downloading packages.config."
         exit 1
@@ -50,9 +50,9 @@ if [ ! -f $TOOLS_DIR/packages.config ]; then
 fi
 
 # Download NuGet if it does not exist.
-if [ ! -f $NUGET_EXE ]; then
+if [ ! -f "$NUGET_EXE" ]; then
     echo "Downloading NuGet..."
-    curl -Lsfo $NUGET_EXE https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
+    curl -Lsfo "$NUGET_EXE" https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
     if [ $? -ne 0 ]; then
         echo "An error occured while downloading nuget.exe."
         exit 1
@@ -60,8 +60,8 @@ if [ ! -f $NUGET_EXE ]; then
 fi
 
 # Restore tools from NuGet.
-pushd $TOOLS_DIR >/dev/null
-mono $NUGET_EXE install -ExcludeVersion
+pushd "$TOOLS_DIR" >/dev/null
+mono "$NUGET_EXE" install -ExcludeVersion
 if [ $? -ne 0 ]; then
     echo "Could not restore NuGet packages."
     exit 1
@@ -69,7 +69,7 @@ fi
 popd >/dev/null
 
 # Make sure that Cake has been installed.
-if [ ! -f $CAKE_EXE ]; then
+if [ ! -f "$CAKE_EXE" ]; then
     echo "Could not find Cake.exe at '$CAKE_EXE'."
     exit 1
 fi
@@ -77,11 +77,11 @@ fi
 echo "EXTRA ARGS: $EXTRA_ARGS"
 # Start Cake
 if $SHOW_VERSION; then
-    mono $CAKE_EXE -version -settings_skipverification=true
+    mono "$CAKE_EXE" -version -settings_skipverification=true
 elif $DRYRUN; then
-    mono $CAKE_EXE $SCRIPT -verbosity=$VERBOSITY -configuration=$CONFIGURATION -target=$TARGET -dryrun -settings_skipverification=true $EXTRA_ARGS
+    mono "$CAKE_EXE" $SCRIPT -verbosity=$VERBOSITY -configuration=$CONFIGURATION -target=$TARGET -dryrun -settings_skipverification=true $EXTRA_ARGS
 else
-    mono $CAKE_EXE $SCRIPT -verbosity=$VERBOSITY -configuration=$CONFIGURATION -target=$TARGET -settings_skipverification=true $EXTRA_ARGS
+    mono "$CAKE_EXE" $SCRIPT -verbosity=$VERBOSITY -configuration=$CONFIGURATION -target=$TARGET -settings_skipverification=true $EXTRA_ARGS
 fi
 
 exit $?
